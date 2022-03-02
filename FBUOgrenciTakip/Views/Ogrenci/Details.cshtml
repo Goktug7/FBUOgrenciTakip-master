@@ -1,0 +1,128 @@
+﻿@model DataAccessLayer.Entities.Ogrenci
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+
+<h1>Detail</h1>
+
+<div class="row">
+    <dl class="row col-md-6">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ad)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ad)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Soyad)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Soyad)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tel)
+        </dd>
+    </dl>
+    <div class="col-md-4">
+
+      <span id="not" hidden>Not:</span><input type="text" name="eklenot" id="eklenot" hidden />
+      <input  type="button"  value="Ekle" onclick="addNewNote()"  id="ekle" hidden />
+      <input type="button" value="Not eklemek için tıkla" onclick="show_hide()"  /> 
+
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Not Ekle", "AddNote", new {  id = Model.Id  }) |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Notlar</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @{
+            int rowNum = 1;
+        }
+        @foreach (var nt in Model.Nots)
+        {
+            <div class="row">
+                <div class="col-md-2">
+                    @rowNum - 
+                    <a href="/Ogrenci/NotEdit/@nt.Id/@nt.OgrId" class="bi bi-pen"></a>
+                    <a href="/Ogrenci/NotDelete/@nt.Id/@nt.OgrId" class="bi bi-trash"></a>
+
+                </div>
+                
+                <div class="col-md-8">
+                        @nt.Text                           
+                </div>
+
+            </div>
+            rowNum++;
+        }
+            <div class="row">
+                <div class="col-md-2">
+                    <a id="pen" hidden class="bi bi-pen"></a>
+                    <a id="trash" hidden class="bi bi-trash"></a>
+                </div>
+                <div class="col-md-8">
+                    <h6 id="changeArea"></h6>
+                </div>
+            </div>
+    </div>
+</div>
+
+<script>
+    function addNewNote()
+    {
+        var not= $('#eklenot').val();
+        var url = "/Ogrenci/addNewNote?newNot=" + not 
+
+        $.get(url, function (data, status) {
+            $('#changeArea').html(data);
+        });
+
+    }
+    var a=0;
+    function show_hide(){
+        if(a==0){
+        document.getElementById("eklenot").hidden=true;
+        document.getElementById("ekle").hidden=true;
+        document.getElementById("not").hidden=true;
+        document.getElementById("pen").hidden=true;
+        document.getElementById("trash").hidden=true;
+
+
+        return a=1;
+        }
+        else{
+
+        document.getElementById("eklenot").hidden=false;
+        document.getElementById("ekle").hidden=false;
+        document.getElementById("not").hidden=false;
+        document.getElementById("pen").hidden=false;
+        document.getElementById("trash").hidden=false;
+
+
+        return a=0;
+
+        }
+
+    }
+
+</script>
